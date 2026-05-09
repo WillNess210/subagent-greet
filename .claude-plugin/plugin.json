@@ -6,7 +6,5 @@
   "homepage": "https://github.com/WillNess210/subagent-greet",
   "repository": "https://github.com/WillNess210/subagent-greet",
   "license": "MIT",
-  "keywords": ["subagents", "agents", "context", "prompting", "delegation"],
-  "skills": "./skills/",
-  "hooks": "./hooks/hooks.json"
+  "keywords": ["subagents", "agents", "context", "prompting", "delegation"]
 }
