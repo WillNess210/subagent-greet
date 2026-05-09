@@ -1,0 +1,15 @@
+{
+  "name": "subagent-greet",
+  "owner": { "name": "WillNess210" },
+  "description": "Per-subagent calling guidance for Claude Code.",
+  "plugins": [
+    {
+      "name": "subagent-greet",
+      "source": "./",
+      "description": "Inject per-subagent calling guidance before Agent tool invocations. Reads a `greeting:` YAML field from subagent definition files and ships curated defaults for built-in subagents.",
+      "version": "0.1.0",
+      "author": { "name": "WillNess210" },
+      "tags": ["subagents", "context", "prompting"]
+    }
+  ]
+}
