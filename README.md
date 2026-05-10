@@ -4,9 +4,24 @@ Per-subagent calling guidance for Claude Code.
 
 ## Why
 
-The subagent `description` field is loaded into the main agent's context for *every* session, so it must stay short. But the best prompt-writing guidance for a given subagent (required inputs, gotchas, examples, output shape) is often hundreds of tokens — wasted context when that subagent isn't being called.
+When the main agent delegates to a subagent, the prompt it passes is the only lever it has — and the only thing it has to write that prompt from is the subagent's `description`. But `description` is always loaded in context (so it must stay short) and its job is to tell the main agent **when** to call the subagent, not **how**. Stuffing HOW-guidance into `description` pays that context cost every session, even when the subagent never gets called.
 
-`subagent-greet` adds a new YAML frontmatter field, `greeting:`, that loads on demand — only when the main agent is about to delegate to that specific subagent.
+`subagent-greet` adds a `greeting:` YAML field that loads on demand — only when the main agent is about to delegate to that specific subagent:
+
+```mermaid
+flowchart LR
+  subgraph Before
+    A1[main agent decides<br/>to call Explore] --> A2["writes prompt:<br/>'search the codebase'"]
+    A2 --> A3[Explore returns<br/>200 unrelated hits]
+    A3 --> A4[main agent<br/>still confused]
+  end
+  subgraph With&nbsp;greeting
+    B1[main agent decides<br/>to call Explore] --> B2[fetches greeting]
+    B2 --> B3["writes prompt:<br/>'quick breadth,<br/>exact target X'"]
+    B3 --> B4[Explore returns<br/>1 file]
+    B4 --> B5[main agent<br/>has the answer]
+  end
+```
 
 ## What it ships
 
