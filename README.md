@@ -4,7 +4,7 @@ Per-subagent calling guidance for Claude Code.
 
 ## Why
 
-When the main agent delegates to a subagent, the prompt it passes is the only lever it has — and the only thing it has to write that prompt from is the subagent's `description`. But `description` is always loaded in context (so it must stay short) and its job is to tell the main agent **when** to call the subagent, not **how**. Stuffing HOW-guidance into `description` pays that context cost every session, even when the subagent never gets called.
+When the main agent delegates to a subagent, the prompt it passes is the only lever it has — and the only context it has to write that prompt from is the subagent's `description`. But `description` is always loaded in context (so it must stay short) and its job is to tell the main agent **when** to call the subagent, not **how**. Stuffing HOW-guidance into `description` pays that context cost every session, even when the subagent never gets called.
 
 `subagent-greet` adds a `greeting:` YAML field that loads on demand — only when the main agent is about to delegate to that specific subagent. Concretely, for a call to a `code-review` subagent:
 
