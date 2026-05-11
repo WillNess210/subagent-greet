@@ -6,10 +6,10 @@ Per-subagent calling guidance for Claude Code.
 
 When the main agent delegates to a subagent, the prompt it passes is the only lever it has — and the only thing it has to write that prompt from is the subagent's `description`. But `description` is always loaded in context (so it must stay short) and its job is to tell the main agent **when** to call the subagent, not **how**. Stuffing HOW-guidance into `description` pays that context cost every session, even when the subagent never gets called.
 
-`subagent-greet` adds a `greeting:` YAML field that loads on demand — only when the main agent is about to delegate to that specific subagent. Concretely, for a call to `Explore`:
+`subagent-greet` adds a `greeting:` YAML field that loads on demand — only when the main agent is about to delegate to that specific subagent. Concretely, for a call to a `code-review` subagent:
 
-- **Without it** — main agent decides to call Explore → guesses a prompt (*"search the codebase"*) → Explore returns 200 unrelated hits → main agent is no better off, and now carries 200 hits of noise.
-- **With it** — main agent decides to call Explore → fetches the greeting → writes a targeted prompt (*"quick breadth, exact target X"*) → Explore returns the one file → main agent has the answer.
+- **Without it** — main agent: *"review my changes"* → the subagent reviews the whole diff plus some unrelated files, buries a race-condition bug among import-ordering nits, no severity → main agent can't tell what matters.
+- **With it** — main agent fetches the greeting, which says *name the changed files and the intent, tag findings High/Med/Low, skip style nits unless asked, report don't fix* → main agent writes *"review `auth/middleware.ts` + `auth/tokens.ts`; intent: fix the token-refresh race; severity-tag; skip style"* → focused, triaged report.
 
 ## What it ships
 
