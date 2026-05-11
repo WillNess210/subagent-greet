@@ -6,22 +6,10 @@ Per-subagent calling guidance for Claude Code.
 
 When the main agent delegates to a subagent, the prompt it passes is the only lever it has — and the only thing it has to write that prompt from is the subagent's `description`. But `description` is always loaded in context (so it must stay short) and its job is to tell the main agent **when** to call the subagent, not **how**. Stuffing HOW-guidance into `description` pays that context cost every session, even when the subagent never gets called.
 
-`subagent-greet` adds a `greeting:` YAML field that loads on demand — only when the main agent is about to delegate to that specific subagent:
+`subagent-greet` adds a `greeting:` YAML field that loads on demand — only when the main agent is about to delegate to that specific subagent. Concretely, for a call to `Explore`:
 
-```mermaid
-flowchart LR
-  subgraph Before
-    A1[main agent decides<br/>to call Explore] --> A2["writes prompt:<br/>'search the codebase'"]
-    A2 --> A3[Explore returns<br/>200 unrelated hits]
-    A3 --> A4[main agent<br/>still confused]
-  end
-  subgraph With&nbsp;greeting
-    B1[main agent decides<br/>to call Explore] --> B2[fetches greeting]
-    B2 --> B3["writes prompt:<br/>'quick breadth,<br/>exact target X'"]
-    B3 --> B4[Explore returns<br/>1 file]
-    B4 --> B5[main agent<br/>has the answer]
-  end
-```
+- **Without it** — main agent decides to call Explore → guesses a prompt (*"search the codebase"*) → Explore returns 200 unrelated hits → main agent is no better off, and now carries 200 hits of noise.
+- **With it** — main agent decides to call Explore → fetches the greeting → writes a targeted prompt (*"quick breadth, exact target X"*) → Explore returns the one file → main agent has the answer.
 
 ## What it ships
 
