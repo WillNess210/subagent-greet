@@ -8,8 +8,8 @@ When the main agent delegates to a subagent, the prompt it passes is the only le
 
 `subagent-greet` adds a `greeting:` YAML field that loads on demand — only when the main agent is about to delegate to that specific subagent. Concretely, for a call to a `code-review` subagent:
 
-- **Without it** — main agent: *"review my changes"* → the subagent reviews the whole diff plus some unrelated files, buries a race-condition bug among import-ordering nits, no severity → main agent can't tell what matters.
-- **With it** — main agent fetches the greeting, which says *name the changed files and the intent, tag findings High/Med/Low, skip style nits unless asked, report don't fix* → main agent writes *"review `auth/middleware.ts` + `auth/tokens.ts`; intent: fix the token-refresh race; severity-tag; skip style"* → focused, triaged report.
+- **Without it** — main agent: *"review my changes"* → the subagent has no idea what changed or why, reviews everything at once, can't separate intentional changes from bugs → main agent gets noise.
+- **With it** — main agent fetches the greeting, which says *pass the files in scope, the intent behind the change, and any requirements it has to satisfy* → main agent writes *"review `auth/middleware.ts` + `auth/tokens.ts`; intent: fix the token-refresh race; requirement: no behavior change for non-OAuth flows"* → the subagent reviews against the actual goal → focused, relevant findings.
 
 ## What it ships
 
