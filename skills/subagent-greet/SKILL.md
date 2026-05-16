@@ -28,24 +28,4 @@ The subagent `description` field is loaded into the main agent's context for eve
 
 `greeting:` is a YAML frontmatter field on subagent definition files (`~/.claude/agents/*.md`, `<project>/.claude/agents/*.md`). It loads only when this skill fetches it, immediately before invocation — high-leverage context, on demand.
 
-## Authoring greetings for your own subagents
-
-Add a `greeting:` block to the YAML frontmatter of your agent file:
-
-```yaml
----
-name: my-agent
-description: Short description loaded every session.
-greeting: |
-  Required inputs: <list>.
-  Output format: <bullets|table|paragraphs>, <word cap>.
-  Common pitfall: <gotcha>.
-  Example invocation: <one-liner>.
----
-```
-
-Block scalar (`|`) preserves newlines. Single-line (`greeting: "..."`) also works.
-
-Notes:
-- Single-line greetings are treated as plain text. Surrounding `"..."` or `'...'` is stripped, but YAML escape sequences (`\"`, `\n`, etc.) are **not** unescaped — keep single-line greetings simple, or use `|` if you need special characters.
-- An explicit empty value (`greeting: ""` or empty `|` block) is treated the same as a missing key: the script falls through to the next lookup source (project, plugin cache, curated built-in, generic fallback). To suppress a curated default, ship a non-empty greeting (even a single space).
+> To author a greeting for one of your own subagents, see the `writing-greetings` skill — the framework, anti-patterns, and worked examples live there.
