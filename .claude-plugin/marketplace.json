@@ -7,7 +7,7 @@
       "name": "subagent-greet",
       "source": "./",
       "description": "Inject per-subagent calling guidance before Agent tool invocations. Reads a `greeting:` YAML field from subagent definition files and ships curated defaults for built-in subagents.",
-      "version": "0.2.0",
+      "version": "0.2.1",
       "author": { "name": "WillNess210" },
       "tags": ["subagents", "context", "prompting"]
     }

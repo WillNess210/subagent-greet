@@ -17,8 +17,8 @@ The script writes guidance to stdout. Read it, then write the `Agent` tool's `pr
 
 ## Rules
 
-- Run this **before** the `Agent` tool call. **Never in parallel** — the greeting must influence how you write the prompt, so it has to land in context first.
-- Run **once per delegation**. No need to re-run for follow-up `SendMessage` calls to the same subagent.
+- Run this **before** the `Agent` tool call. **Never in parallel** — the greeting must land in context first so it can shape the prompt.
+- Run **once per subagent per session.** After the first call to a given subagent, its greeting is already in your context; subsequent calls don't need to refetch.
 - Apply the guidance: required inputs, common pitfalls, length caps, output format expectations.
 - If the output is the generic fallback ("Call the X subagent with the best possible prompt..."), proceed with your best judgment — no curated greeting exists for that id yet.
 

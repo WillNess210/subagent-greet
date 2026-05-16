@@ -7,12 +7,11 @@ set -euo pipefail
 read -r -d '' CONTEXT <<'EOF' || true
 Subagent invocation rule (from subagent-greet plugin):
 
-Before calling any subagent via the Agent tool, you MUST first activate the `subagent-greet` skill.
-The skill runs a script that returns context-specific calling guidance for that subagent (prompt tips, required inputs, gotchas, examples). Read the guidance, then invoke Agent with a prompt informed by it.
+Before the FIRST call to a given subagent in this session, you MUST activate the `subagent-greet` skill. The skill runs a script that returns context-specific calling guidance for that subagent (prompt tips, required inputs, gotchas, examples). Read the guidance, then invoke Agent with a prompt informed by it.
 
 Sequencing: run subagent-greet FIRST, then Agent. Never in parallel — the greeting must influence how you write the Agent prompt.
 
-Once per delegation. Skip for follow-up SendMessage calls to the same subagent.
+Once per subagent per session. After the first call to a given subagent, its greeting is already in your context; subsequent calls don't need to refetch.
 EOF
 
 # Escape for JSON. python3 is required (ships in macOS, in our Dockerfile).
